@@ -1,7 +1,9 @@
 #SingleInstance Force
+#Include libs\VIEW.ahk
 
 ; Program Tools
 AppsKey & x::ExitApp()
+A_IconTip := 'AppsKey + x to exit'
 
 ; Development tools
 AppsKey & r::Reload()
@@ -26,23 +28,30 @@ tray.Check('Enable app')
 tray.Add('Exit', exit_app)
 
 toggle_app(ItemName, ItemPos, MyMenu) {
-    global enabled := !enabled
+  global enabled := !enabled
 
-    if (enabled)
-        MyMenu.Check(ItemName)
-    else
-        MyMenu.Uncheck(ItemName)
+  if (enabled)
+    MyMenu.Check(ItemName)
+  else
+    MyMenu.Uncheck(ItemName)
 }
 
 exit_app(_1, _2, _3) {
-    ExitApp()
+  ExitApp()
 }
 
+/**********\
+| Disabled |
+\**********/
 
 #HotIf !enabled ; Can only be used when app is not Enabled
 ; Allows AppsKey to be used normally 
 AppsKey::SendInput('{AppsKey}')
 #HotIf ; End of If !Enabled
+
+/*********\
+| Hotkeys |
+\*********/
 
 #HotIf enabled ; App must be enabled to use these hotkeys
 
@@ -52,18 +61,18 @@ AppsKey & F2::return
 ; Mouse
 ; Move pixel-by-pixel
 AppsKey & Numpad4:: {
-    MouseMove(-1 * (GetKeyState("RAlt") ? 10 : 1) * (GetKeyState("Ctrl") ? 10 : 1), 0,, 'R')
+  MouseMove(-1 * (GetKeyState("RAlt") ? 10 : 1) * (GetKeyState("Ctrl") ? 10 : 1), 0,, 'R')
 }
 AppsKey & Numpad8:: {
-    MouseMove(0, -1 * (GetKeyState("RAlt") ? 10 : 1) * (GetKeyState("Ctrl") ? 10 : 1),, 'R')
+  MouseMove(0, -1 * (GetKeyState("RAlt") ? 10 : 1) * (GetKeyState("Ctrl") ? 10 : 1),, 'R')
 }
 
 AppsKey & Numpad6:: {
-    MouseMove(1 * (GetKeyState("RAlt") ? 10 : 1) * (GetKeyState("Ctrl") ? 10 : 1), 0,, 'R')
+  MouseMove(1 * (GetKeyState("RAlt") ? 10 : 1) * (GetKeyState("Ctrl") ? 10 : 1), 0,, 'R')
 }
 
 AppsKey & Numpad2:: {
-    MouseMove(0, 1 * (GetKeyState("RAlt") ? 10 : 1) * (GetKeyState("Ctrl") ? 10 : 1),, 'R')
+  MouseMove(0, 1 * (GetKeyState("RAlt") ? 10 : 1) * (GetKeyState("Ctrl") ? 10 : 1),, 'R')
 }
 
 ; Click
@@ -96,15 +105,15 @@ AppsKey & /::SendInput('{Volume_Mute}')
 AppsKey & `;::SendInput('{Media_Prev}')
 AppsKey & '::SendInput('{Media_Next}')
 AppsKey & Space:: {
-    ; This is the more general one. It will stop YouTube videos as well.
-    if (GetKeyState("RAlt")) {
-        SendInput('{Media_Play_Pause}')
-        return
-    }
-    ; Specific to Spotify. Will only play/pause spotify
-    id := WinGetId('ahk_class Chrome_WidgetWin_0 ahk_exe Spotify.exe')
-    ; DetectHiddenWindows On
-    PostMessage(0x319,, 0xE0000,, 'ahk_id ' id) ; msg: WM_APPCOMMAND - lParam: 14 APPCOMMAND_MEDIA_PLAY_PAUSE
+  ; This is the more general one. It will stop YouTube videos as well.
+  if (GetKeyState("RAlt")) {
+    SendInput('{Media_Play_Pause}')
+    return
+  }
+  ; Specific to Spotify. Will only play/pause spotify
+  id := WinGetId('ahk_class Chrome_WidgetWin_0 ahk_exe Spotify.exe')
+  ; DetectHiddenWindows On
+  PostMessage(0x319,, 0xE0000,, 'ahk_id ' id) ; msg: WM_APPCOMMAND - lParam: 14 APPCOMMAND_MEDIA_PLAY_PAUSE
 }
 
 ; Date
@@ -119,12 +128,12 @@ AppsKey & s::Run('Explorer.exe G:\My Drive\BYU')
 /*
 ; Make new .txt file
 AppsKey & t:: {
-    if WinActive("ahk_exe Explorer.EXE ahk_class CabinetWClass") {
-        Send('!h')
-        Send('!w')
-        Send('{down 6}')
-        Send('{enter}')
-    }
+  if WinActive("ahk_exe Explorer.EXE ahk_class CabinetWClass") {
+    Send('!h')
+    Send('!w')
+    Send('{down 6}')
+    Send('{enter}')
+  }
 }
 */
 
@@ -150,21 +159,27 @@ Appskey & u::Run('ubuntu')
 
 ; Text shortcuts
 AppsKey & [:: {
-    IH := InputHook("L5T3",, "shrug")
-    IH.Start()
-    IH.Wait()
-    if (IH.EndReason == "Match")
-        Switch IH.Match {
-            Case "shrug":
-                Send('¯\_(ツ)_/¯')
-        }
-    else {
-        ; ER := IH.EndReason
-        ; ToolTip, %ER%,,, 10
-        ; Sleep, 1000
-        ; rm_tt(10)
-    }
+  IH := InputHook("L5T3",, "shrug")
+  IH.Start()
+  IH.Wait()
+  if (IH.EndReason == "Match")
+    Switch IH.Match {
+      Case "shrug":
+        Send('¯\_(ツ)_/¯')
+  }
+  else {
+    ; ER := IH.EndReason
+    ; ToolTip, %ER%,,, 10
+    ; Sleep, 1000
+    ; rm_tt(10)
+  }
 }
+
+tgPath := 'C:\Users\Caleb\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Telegram Desktop\Telegram'
+tgTitle := 'Telegram'
+tgExtitle := 'Desktop'
+#Numpad2::VIEW_toggle(tgPath, tgTitle, tgExtitle)
+#NumpadDown::VIEW_toggle(tgPath, tgTitle, tgExtitle)
 
 #HotIf ; End of If Enabled
 
@@ -175,8 +190,8 @@ AppsKey & [:: {
 /*
 ; Remove ToolTip
 rm_tt(tn:=1, delay_:=0) { ; tn = tooltip number
-    Sleep, %delay_%
-    ToolTip,,,,%tn%
-    return
+  Sleep, %delay_%
+  ToolTip,,,,%tn%
+  return
 }
  */
