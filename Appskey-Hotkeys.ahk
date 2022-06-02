@@ -26,6 +26,7 @@ tray.Add('Enable app', toggle_app)
 tray.Default := 'Enable App'
 tray.Check('Enable app')
 tray.Add('Exit', exit_app)
+tray.Add('Reload', reload_app)
 
 toggle_app(ItemName, ItemPos, MyMenu) {
   global enabled := !enabled
@@ -38,6 +39,10 @@ toggle_app(ItemName, ItemPos, MyMenu) {
 
 exit_app(_1, _2, _3) {
   ExitApp()
+}
+
+reload_app(_1, _2, _3) {
+  Reload()
 }
 
 /**********\
