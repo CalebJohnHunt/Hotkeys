@@ -25,8 +25,8 @@ tray.Delete() ; Clear menu
 tray.Add('Enable app', toggle_app)
 tray.Default := 'Enable App'
 tray.Check('Enable app')
-tray.Add('Exit', exit_app)
 tray.Add('Reload', reload_app)
+tray.Add('Exit', exit_app)
 
 toggle_app(ItemName, ItemPos, MyMenu) {
   global enabled := !enabled
@@ -59,6 +59,25 @@ AppsKey::SendInput('{AppsKey}')
 \*********/
 
 #HotIf enabled ; App must be enabled to use these hotkeys
+
+AppsKey & m:: {
+  ih := InputHook()
+  ih.KeyOpt('{All}', 'E')
+  ih.Start()
+  ih.Wait()
+  if (ih.EndReason !== 'EndKey') {
+    return
+  }
+  sendChar := ih.EndKey
+  ih := InputHook('L2 T3', '{ESC}')
+  ih.Start()
+  ih.Wait()
+  try 
+    num := Integer(ih.Input)
+  catch TypeError
+    return
+  Send('{' sendChar ' ' num '}')
+}
 
 ; Testing
 AppsKey & F2::return
