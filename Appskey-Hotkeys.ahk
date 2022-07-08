@@ -60,6 +60,10 @@ AppsKey::SendInput('{AppsKey}')
 
 #HotIf enabled ; App must be enabled to use these hotkeys
 
+; Testing
+AppsKey & F2::return
+
+; Repeat character / Playing with inputhook
 AppsKey & m:: {
   ih := InputHook()
   ih.KeyOpt('{All}', 'E')
@@ -79,8 +83,8 @@ AppsKey & m:: {
   Send('{' sendChar ' ' num '}')
 }
 
-; Testing
-AppsKey & F2::return
+; Clipboard
+AppsKey & c::Send(A_Clipboard)
 
 ; Mouse
 ; Move pixel-by-pixel
