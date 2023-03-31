@@ -187,13 +187,17 @@ Appskey & u::Run('ubuntu')
 
 ; Text shortcuts
 AppsKey & [:: {
-  IH := InputHook("L5T3",, "shrug")
+  IH := InputHook("CL5T3",, "shrug,POG,pog")
   IH.Start()
   IH.Wait()
   if (IH.EndReason == "Match")
     Switch IH.Match {
       Case "shrug":
         Send('¯\_(ツ)_/¯')
+      case "POG":
+        Send('👁O👁')
+      case "pog":
+        Send('👁o👁')
   }
   else {
     ; ER := IH.EndReason
